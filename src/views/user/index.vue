@@ -1,5 +1,5 @@
 <template>
-  <div>user</div>
+    <div>user</div>
 </template>
 
 <script>
@@ -7,6 +7,6 @@
  * @file 用户模块
  */
 export default {
-  name: "user"
+    name: 'user'
 };
 </script>
