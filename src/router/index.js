@@ -1,7 +1,14 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 Vue.use(VueRouter);
+
+// NProgress配置， 去掉有个滚动加载的样式
+NProgress.configure({
+    showSpinner: false
+});
 
 let routes = [
     {
@@ -52,4 +59,13 @@ router.addRoutes([
     }
 ]);
 
+router.beforeEach((to, from, next) => {
+    // todo 设置路由拦截
+    NProgress.start();
+    next();
+});
+
+router.afterEach((to, from) => {
+    NProgress.done();
+});
 export default router;
