@@ -14,7 +14,10 @@ let routes = [
     {
         path: '/',
         name: 'Home',
-        component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+        component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
+        meta: {
+            requireAuth: true
+        }
     }
 ];
 
@@ -62,7 +65,27 @@ router.addRoutes([
 router.beforeEach((to, from, next) => {
     // todo 设置路由拦截
     NProgress.start();
-    next();
+
+    // 如果是需要登录才能访问的页面
+    if (to.meta.requireAuth) {
+        // 获取token，如果token存在才允许进入
+        if (localStorage.getItem('access_token')) {
+            next();
+        } else {
+            next({
+                path: '/login',
+                query: { redirect: to.fullPath } // 记录被拦截之前的路由，登录后方便跳转过去
+            });
+        }
+    } else {
+        // 如果登录了，还通过url继续到登录页，则不允许跳转过来，甚至可以做个提示
+        if (localStorage.getItem('access_token') && to.path === '/login') {
+            next(false);
+        } else {
+            // 如果是不需要登录的页面，直接跳转过去
+            next();
+        }
+    }
 });
 
 router.afterEach((to, from) => {
