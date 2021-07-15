@@ -15,6 +15,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'indent': ['error', 4],
     'semi': ['error', 'always'],
+    'prefer-const': '0', // 不强制转成const
     "space-before-function-paren": ["error", {
       "anonymous": "always",
       "named": "always",
