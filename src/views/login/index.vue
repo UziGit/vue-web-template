@@ -8,16 +8,16 @@
                     label-width="80px"
                     class="blog-login__form"
                 >
-                    <el-form-item label="用户名">
+                    <el-form-item label="用户名：">
                         <el-input v-model="loginInfo.username"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="密码">
-                        <el-input v-model="loginInfo.password"></el-input>
+                    <el-form-item label="密 码：">
+                        <el-input placeholder="请输入密码" v-model="loginInfo.password" show-password></el-input>
                     </el-form-item>
 
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit" class="blog-login__btn">立即登录</el-button>
+                    <el-form-item label-width="0px">
+                        <el-button type="primary" @click="Login()" class="blog-login__btn">立即登录</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
@@ -32,7 +32,7 @@
                         <el-input v-model="registryInfo.username"></el-input>
                     </el-form-item>
 
-                    <el-form-item>
+                    <el-form-item label-width="0px">
                         <el-button type="primary" @click="onSubmit">立即创建</el-button>
                     </el-form-item>
                 </el-form>
@@ -50,7 +50,8 @@ export default {
             activeName: 'first',
 
             loginInfo: {
-                username: ''
+                username: '',
+                password: ''
             },
 
             registryInfo: {
@@ -60,11 +61,18 @@ export default {
     },
 
     methods: {
-        handleClick () {
-            console.log(111);
+        Login () {
+            this.$api.userApi.login(this.loginInfo).then(res => {
+                localStorage.setItem('access_token', res.data.token);
+                this.$router.push(this.$route.query.redirect);
+            });
         },
 
         onSubmit () {
+            // todo
+        },
+
+        handleClick () {
             console.log(111);
         }
     }
@@ -75,11 +83,12 @@ export default {
     width: 100%;
     min-height: 720px;
     position: relative;
-    background: url('../../assets/login_bg.jpg') center center no-repeat;
+    background: url('../../assets/login_bg3.jpg') center center no-repeat;
+    background-size: cover;
 }
 .blog-login__tab {
     width: 500px;
-    height: 350px;
+    height: 300px;
     margin: auto;
     position: absolute;
     top: 0;
@@ -87,8 +96,12 @@ export default {
     bottom: 0;
     right: 0;
     background-color: #fff;
-    opacity: 0.5;
+    opacity: 0.8;
     border-radius: 10px;
+}
+.blog-login__form {
+    width: 400px;
+    margin: 30px auto;
 }
 
 .el-tabs__nav {
@@ -96,5 +109,8 @@ export default {
 }
 .el-tabs__active-bar {
     left: 174px;
+}
+.el-form-item__label {
+    color: #000;
 }
 </style>

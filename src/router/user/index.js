@@ -3,6 +3,9 @@ export default [
     {
         path: '/user',
         name: 'user',
-        component: () => import('@/views/user/index')
+        component: () => import('@/views/user/index'),
+        meta: {
+            requireAuth: true
+        }
     }
 ];
